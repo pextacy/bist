@@ -1,7 +1,7 @@
 import yfinance as yf
 import time
 
-# 1. TXT Dosyasından Hisse Listesini Okuma
+
 def hisse_listesi_oku(dosya_adi="bist_hisse_listesi.txt"):
     try:
         with open(dosya_adi, "r", encoding="utf-8") as dosya:
@@ -11,7 +11,7 @@ def hisse_listesi_oku(dosya_adi="bist_hisse_listesi.txt"):
         print(f"{dosya_adi} dosyası bulunamadı. Lütfen hisse listesini içeren bir TXT dosyası oluşturun.")
         return []
 
-# 2. yfinance ile Hisse Verilerini Çekme ve Terminalde Gösterme
+
 def hisse_bilgisi_cek(hisse_kodu):
     try:
         hisse = yf.Ticker(hisse_kodu)
@@ -42,7 +42,7 @@ def hisse_bilgisi_cek(hisse_kodu):
         print(f"{hisse_kodu} için veri çekilirken bir hata oluştu: {e}")
         return None
 
-# 3. Favori Hisse Listesi
+
 favori_hisseler = []
 
 def favori_hisse_ekle(hisse_kodu):
@@ -60,7 +60,7 @@ def favori_hisseleri_goster():
     else:
         print("Favori listenizde hisse senedi bulunmamaktadır.")
 
-# 4. Hisse Senedi Detaylarını Görüntüleme
+
 def hisse_detaylari_goster(hisse_kodu):
     try:
         hisse = yf.Ticker(hisse_kodu)
@@ -81,7 +81,7 @@ def hisse_detaylari_goster(hisse_kodu):
     except Exception as e:
         print(f"{hisse_kodu} için detaylar çekilirken bir hata oluştu: {e}")
 
-# 5. Menü Gösterme
+
 def menu_goster():
     print("\n--- BIST Hisse Senedi Tarama Menüsü ---")
     print("1. İsim ile Arama")
@@ -94,14 +94,14 @@ def menu_goster():
     secim = input("Lütfen bir seçenek girin (1-7): ")
     return secim
 
-# 6. Ana Program
+
 def main():
     hisse_listesi = hisse_listesi_oku("bist_hisse_listesi.txt")
     
     while True:
         secim = menu_goster()
         
-        if secim == "1":  # İsim ile Arama
+        if secim == "1":  
             while True:
                 hisse_kodu = input("Hisse senedi sembolü girin (Ana menüye dönmek için 'm' tuşuna basın): ").upper()
                 if hisse_kodu == "M":
@@ -111,12 +111,12 @@ def main():
                 else:
                     print(f"{hisse_kodu} geçerli bir hisse senedi sembolü değil.")
         
-        elif secim == "2":  # Tüm Hisse Senetlerini Getir
+        elif secim == "2":  
             for hisse in hisse_listesi:
                 hisse_bilgisi_cek(hisse)
-                time.sleep(0.5)  # API istekleri arasında 1 saniye bekle
+                time.sleep(0.5)  
         
-        elif secim == "3":  # Hisse Senedi Detaylarını Görüntüle
+        elif secim == "3":  
             while True:
                 hisse_kodu = input("Hisse senedi sembolü girin (Ana menüye dönmek için 'm' tuşuna basın): ").upper()
                 if hisse_kodu == "M":
@@ -126,7 +126,7 @@ def main():
                 else:
                     print(f"{hisse_kodu} geçerli bir hisse senedi sembolü değil.")
         
-        elif secim == "4":  # Fiyat Aralığına Göre Filtrele
+        elif secim == "4":  
             min_fiyat = float(input("Minimum fiyat girin: "))
             max_fiyat = float(input("Maksimum fiyat girin: "))
             for hisse in hisse_listesi:
@@ -134,7 +134,7 @@ def main():
                 if veri and min_fiyat <= veri["Son Fiyat"] <= max_fiyat:
                     print(f"{hisse} - Son Fiyat: {veri['Son Fiyat']:.2f} TL")
         
-        elif secim == "5":  # Günlük Yüzde Değişime Göre Sırala
+        elif secim == "5": 
             veriler = []
             for hisse in hisse_listesi:
                 veri = hisse_bilgisi_cek(hisse)
@@ -145,7 +145,7 @@ def main():
             for veri in veriler:
                 print(f"{veri['Sembol']} - Yüzde Değişim: {veri['Günlük Yüzde Değişim']:.2f}%")
         
-        elif secim == "6":  # Favori Hisse Senetlerini Yönet
+        elif secim == "6": 
             while True:
                 print("\n--- Favori Hisse Senetleri Menüsü ---")
                 print("1. Favori Hisse Ekle")
@@ -162,7 +162,7 @@ def main():
                 else:
                     print("Geçersiz seçenek.")
         
-        elif secim == "7":  # Çıkış
+        elif secim == "7":  
             print("Programdan çıkılıyor...")
             break
         
